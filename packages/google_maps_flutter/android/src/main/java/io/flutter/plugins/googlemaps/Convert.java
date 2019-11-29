@@ -201,21 +201,9 @@ class Convert {
     return Arrays.asList(latLng.latitude, latLng.longitude);
   }
 
-  static LatLng toLatLng(Object o) {
+  private static LatLng toLatLng(Object o) {
     final List<?> data = toList(o);
     return new LatLng(toDouble(data.get(0)), toDouble(data.get(1)));
-  }
-
-  static Point toPoint(Object o) {
-    Map<String, Integer> screenCoordinate = (Map<String, Integer>) o;
-    return new Point(screenCoordinate.get("x"), screenCoordinate.get("y"));
-  }
-
-  static Map<String, Integer> pointToJson(Point point) {
-    final Map<String, Integer> data = new HashMap<>(2);
-    data.put("x", point.x);
-    data.put("y", point.y);
-    return data;
   }
 
   private static LatLngBounds toLatLngBounds(Object o) {
@@ -223,7 +211,10 @@ class Convert {
       return null;
     }
     final List<?> data = toList(o);
-    return new LatLngBounds(toLatLng(data.get(0)), toLatLng(data.get(1)));
+    
+    //https://github.com/flutter/flutter/issues/25298
+    //return new LatLngBounds(toLatLng(data.get(0)), toLatLng(data.get(1)));
+    return LatLngBounds.builder().include(toLatLng(data.get(0))).include(toLatLng(data.get(1))).build();
   }
 
   private static List<?> toList(Object o) {
