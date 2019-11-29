@@ -205,6 +205,18 @@ class Convert {
     final List<?> data = toList(o);
     return new LatLng(toDouble(data.get(0)), toDouble(data.get(1)));
   }
+  
+  static Point toPoint(Object o) {	
+    Map<String, Integer> screenCoordinate = (Map<String, Integer>) o;	
+    return new Point(screenCoordinate.get("x"), screenCoordinate.get("y"));	
+  }	
+
+  static Map<String, Integer> pointToJson(Point point) {	
+    final Map<String, Integer> data = new HashMap<>(2);	
+    data.put("x", point.x);	
+    data.put("y", point.y);	
+    return data;	
+  }	
 
   private static LatLngBounds toLatLngBounds(Object o) {
     if (o == null) {
